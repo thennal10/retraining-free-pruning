@@ -1,9 +1,9 @@
 import torch
 
-from dataset.glue import glue_dataloader
-from dataset.squad import squad_test_dataloader
-from evaluate.glue import eval_glue_acc
-from evaluate.squad import eval_squad_acc
+from ..dataset.glue import glue_dataloader
+from ..dataset.squad import squad_test_dataloader
+from ..evaluate.glue import eval_glue_acc
+from ..evaluate.squad import eval_squad_acc
 
 
 @torch.no_grad()
