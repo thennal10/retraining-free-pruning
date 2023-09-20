@@ -1,4 +1,5 @@
 import torch
+from tqdm import tqdm
 
 from ..utils.arch import apply_neuron_mask
 
@@ -12,7 +13,7 @@ def collect_mask_grads(model, head_mask, neuron_mask, dataloader):
     model.eval()
     head_grads = []
     neuron_grads = []
-    for batch in dataloader:
+    for batch in tqdm(dataloader):
         for k, v in batch.items():
             batch[k] = v.to("cuda", non_blocking=True)
 

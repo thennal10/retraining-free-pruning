@@ -102,7 +102,7 @@ def preprocess_glue(examples, tokenizer, sentence_keys, max_seq_len, pad_to_max,
     return result
 
 
-def glue_dataset(task_name, tokenizer, training, max_seq_len, pad_to_max=False):
+def glue_dataset(task_name, raw_dataset, tokenizer, training, max_seq_len, pad_to_max=False):
     TASK_TO_KEYS = {
         "cola": ("sentence", None),
         "mnli": ("premise", "hypothesis"),
@@ -116,18 +116,14 @@ def glue_dataset(task_name, tokenizer, training, max_seq_len, pad_to_max=False):
     }
     keys = TASK_TO_KEYS[task_name]
 
-    raw_datasets = load_dataset("glue", task_name)
-    preprocessed = raw_datasets.map(
+    preprocessed = raw_dataset.map(
         lambda examples: preprocess_glue(examples, tokenizer, keys, max_seq_len, pad_to_max),
         batched=True,
         load_from_cache_file=True,
-        remove_columns=raw_datasets["train"].column_names,
+        remove_columns=raw_dataset.column_names,
     )
-
-    if training:
-        return preprocessed["train"]
-    else:
-        return preprocessed["validation_matched" if task_name == "mnli" else "validation"]
+    
+    return preprocessed
 
 
 def glue_dataloader(task_name, tokenizer, training, batch_size=32, max_seq_len=None, pad_to_max=False):
