@@ -39,5 +39,5 @@ def collect_mask_grads(model, head_mask, neuron_mask, dataloader):
 
 @torch.no_grad()
 def compute_fisher_info(grads):
-    fisher_info = grads.pow(2).sum(dim=0)
+    fisher_info = grads.pow(2).mean(dim=0)
     return fisher_info
